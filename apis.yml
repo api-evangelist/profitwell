@@ -1,0 +1,73 @@
+aid: profitwell
+name: ProfitWell
+description: >-
+  ProfitWell (now ProfitWell Metrics by Paddle, following Paddle's 2022
+  acquisition of ProfitWell) is a free subscription analytics product that
+  delivers accurate, real-time SaaS metrics such as MRR, churn, ARPU, LTV,
+  retention, and cohort analysis by connecting directly to billing systems
+  like Stripe, Braintree, Chargebee, Recurly, and Paddle. The ProfitWell API
+  at https://api.profitwell.com/v2 provides programmatic access to subscription
+  lifecycle events, customer data, financial metrics, and engagement data,
+  authenticated via a bare API key passed in the Authorization header (no
+  Bearer prefix).
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Subscription Analytics
+  - SaaS Metrics
+  - Revenue Analytics
+  - Churn
+  - MRR
+  - Billing
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/profitwell/refs/heads/main/apis.yml
+created: '2026-05-11'
+modified: '2026-05-11'
+specificationVersion: '0.19'
+apis:
+  - aid: profitwell:metrics-api
+    name: ProfitWell Metrics API
+    description: >-
+      REST API for managing subscription lifecycle data, retrieving SaaS
+      financial metrics (MRR, churn, ARPU, LTV), and accessing customer and
+      engagement data on the ProfitWell Metrics (Paddle) platform.
+      Authentication uses a bare private API key (no Bearer prefix) passed in
+      the Authorization header. Trailing slashes on endpoint URLs are
+      required.
+    humanURL: https://www.paddle.com/help/profitwell-metrics/setup/get-started/profit-well-api
+    baseURL: https://api.profitwell.com/v2
+    tags:
+      - Subscription Analytics
+      - SaaS Metrics
+      - Revenue
+      - REST
+    properties:
+      - type: Documentation
+        url: https://www.paddle.com/help/profitwell-metrics/setup/get-started/profit-well-api
+      - type: API Reference
+        url: https://profitwellapiv2.docs.apiary.io/
+      - type: Customers API
+        url: https://www.paddle.com/help/profitwell-metrics/export-data/customers-api/customers-api
+      - type: JS Snippet Install
+        url: https://www.paddle.com/help/profitwell-metrics/setup/install-engagement/how-to-install-the-profit-well-js-snippet-for-engagement-data
+
+common:
+  - type: Website
+    url: https://www.paddle.com/profitwell-metrics
+  - type: Documentation
+    url: https://www.paddle.com/help/profitwell-metrics
+  - type: Sign Up
+    url: https://www2.profitwell.com/free-subscription-analytics
+  - type: Pricing
+    url: https://www.paddle.com/profitwell-metrics
+  - type: Login
+    url: https://my.profitwell.com/login
+  - type: Paddle Parent Company
+    url: https://www.paddle.com
+  - type: Status
+    url: https://status.paddle.com
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/paddlehq/
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
