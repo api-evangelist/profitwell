@@ -44,7 +44,7 @@ apis:
     properties:
       - type: Documentation
         url: https://www.paddle.com/help/profitwell-metrics/setup/get-started/profit-well-api
-      - type: API Reference
+      - type: APIReference
         url: https://profitwellapiv2.docs.apiary.io/
       - type: Customers API
         url: https://www.paddle.com/help/profitwell-metrics/export-data/customers-api/customers-api
@@ -56,7 +56,7 @@ common:
     url: https://www.paddle.com/profitwell-metrics
   - type: Documentation
     url: https://www.paddle.com/help/profitwell-metrics
-  - type: Sign Up
+  - type: SignUp
     url: https://www2.profitwell.com/free-subscription-analytics
   - type: Pricing
     url: https://www.paddle.com/profitwell-metrics
@@ -64,7 +64,7 @@ common:
     url: https://my.profitwell.com/login
   - type: Paddle Parent Company
     url: https://www.paddle.com
-  - type: Status
+  - type: StatusPage
     url: https://status.paddle.com
   - type: LinkedIn
     url: https://www.linkedin.com/company/paddlehq/
