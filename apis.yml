@@ -52,6 +52,8 @@ apis:
         url: https://www.paddle.com/help/profitwell-metrics/setup/install-engagement/how-to-install-the-profit-well-js-snippet-for-engagement-data
 
 common:
+  - type: GitHubOrganization
+    url: https://github.com/ProfitWell
   - type: Website
     url: https://www.paddle.com/profitwell-metrics
   - type: Documentation
