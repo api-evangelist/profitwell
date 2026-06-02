@@ -1,0 +1,155 @@
+aid: profitwell
+name: ProfitWell (Paddle Retain / ProfitWell Metrics)
+review_type: webhook-availability
+question: Does ProfitWell (now Paddle Retain / ProfitWell Metrics) expose a documented, first-party webhook or event-notification surface that can be modeled as AsyncAPI 2.6?
+answer: No
+investigated_on: '2026-05-30'
+investigated_by: API Evangelist
+summary: |
+  ProfitWell — rebranded under Paddle as ProfitWell Metrics (analytics) and
+  Paddle Retain (dunning / payment recovery / cancellation flow) following
+  Paddle's 2022 acquisition — does not publish a first-party outbound webhook
+  or event-notification surface of its own. ProfitWell's documented developer
+  surface is an inbound REST API (api.profitwell.com/v2) used to push
+  subscription, customer, and engagement data into ProfitWell, plus a JS
+  snippet for engagement data collection. ProfitWell Metrics describes itself
+  as a metrics/analytics layer that reads from connected billing systems
+  (Stripe, Braintree, Chargebee, Recurly, Paddle), not as an event emitter.
+  Paddle Retain's documentation describes feature configuration (failed
+  payment retries, cancellation flow, term optimization) but does not
+  enumerate Retain-scoped webhook event types. Webhooks at Paddle live on the
+  Paddle Billing product (developer.paddle.com/webhooks), not on
+  ProfitWell/Retain. No AsyncAPI 2.6 spec was produced because there is no
+  documented ProfitWell/Retain channel set or event payload schema to
+  describe without fabrication.
+findings:
+  - name: ProfitWell API v2 is inbound REST, with no documented webhook surface
+    detail: |
+      The ProfitWell API v2 reference at profitwellapiv2.docs.apiary.io
+      documents REST endpoints for pushing subscription lifecycle data,
+      customer records, and engagement events into ProfitWell. The reference
+      page only declares HTTPS host configuration (production, mock, proxy)
+      and does not list any webhook, event-subscription, or callback
+      mechanism. The Paddle help page for the ProfitWell API
+      (paddle.com/help/profitwell-metrics/setup/get-started/profit-well-api)
+      similarly describes only inbound user/subscription input, noting that
+      changes "can take up to 90 minutes to reflect in metrics" — which is
+      inconsistent with a real-time event emission model.
+    sources:
+      - https://profitwellapiv2.docs.apiary.io/
+      - https://www.paddle.com/help/profitwell-metrics/setup/get-started/profit-well-api
+  - name: ProfitWell Metrics is documented as analytics, not as an event source
+    detail: |
+      The Paddle Developer "ProfitWell Metrics" concept page positions
+      ProfitWell Metrics as a metrics/analytics product surfaced inside the
+      Paddle Billing dashboard. Sharing of metrics is described via
+      integrations with Slack, HubSpot, Intercom, and Salesforce — i.e.
+      destination integrations, not a publisher-style webhook contract.
+      No webhook events, callbacks, or outbound notification subscriptions
+      are documented for ProfitWell Metrics itself.
+    sources:
+      - https://developer.paddle.com/concepts/profitwell-metrics
+  - name: Paddle Retain documents feature configuration, not Retain-scoped webhooks
+    detail: |
+      The Paddle Developer "Set up Paddle Retain" page describes enabling
+      Retain features inside Paddle Billing — payment recovery retries,
+      cancellation flow, term optimization — but does not enumerate Retain-
+      level webhook event types (e.g. recovery_succeeded, recovery_failed,
+      dunning_exhausted, cancellation_flow_completed) with payload schemas.
+      The documentation directs developers to the general Paddle Billing
+      webhooks system, where Retain interventions are reflected indirectly
+      through Paddle Billing's existing transaction.* and subscription.*
+      events.
+    sources:
+      - https://developer.paddle.com/build/retain/set-up-retain-profitwell
+      - https://developer.paddle.com/webhooks/overview
+  - name: Paddle's webhook surface is scoped to Paddle Billing, not ProfitWell
+    detail: |
+      Paddle's webhook documentation (developer.paddle.com/webhooks) and
+      event-types reference (developer.paddle.com/api-reference/event-types/overview)
+      live under the Paddle Billing API, with notification destinations,
+      secret-key signing, and event-type filtering managed there. Event
+      types follow the entity.event_type naming convention. None of the
+      documented event-type prefixes are owned by ProfitWell or Retain as
+      a distinct emitter; Retain outcomes are observable only via Paddle
+      Billing's standard transaction/subscription events, which are out of
+      scope for a ProfitWell-aid spec.
+    sources:
+      - https://developer.paddle.com/webhooks/overview
+      - https://developer.paddle.com/api-reference/event-types/overview
+documented_surface:
+  - name: ProfitWell API v2 (REST)
+    direction: inbound
+    protocol: HTTPS REST
+    webhook: false
+    notes: |
+      Bare-API-key auth in Authorization header (no Bearer prefix). Used to
+      push subscription lifecycle data, customer records, and engagement
+      events into ProfitWell. No outbound event mechanism documented.
+  - name: ProfitWell JS Snippet
+    direction: inbound
+    protocol: HTTPS (browser SDK)
+    webhook: false
+    notes: |
+      Client-side snippet for collecting engagement data and feeding it back
+      into ProfitWell. Emits no developer-consumable webhooks.
+  - name: Paddle Retain (cancellation flow, dunning)
+    direction: configuration / UX
+    protocol: PaddleJS + dashboard configuration
+    webhook: false
+    notes: |
+      Paddle.Retain.initCancellationFlow() is a client-side method invoked
+      by the merchant's checkout/account UI. Retain itself does not publish
+      an event stream; downstream outcomes (recovery, churn) flow through
+      Paddle Billing webhooks.
+  - name: Paddle Billing webhooks
+    direction: outbound
+    protocol: HTTPS POST with signed secret
+    webhook: true
+    notes: |
+      The actual webhook surface for the Paddle ecosystem. Lives under the
+      Paddle Billing aid, NOT under ProfitWell. Out of scope for a ProfitWell
+      apis.yml entry.
+asyncapi_recommendation:
+  produce: false
+  reason: |
+    There is no first-party ProfitWell or Paddle Retain webhook, server-sent
+    event, or message-broker endpoint to describe. ProfitWell's documented
+    API is inbound REST, Retain's documented surface is feature
+    configuration and a client-side cancellation flow, and the actual
+    outbound event stream is owned by Paddle Billing under a separate
+    product. Producing an AsyncAPI 2.6 spec under the profitwell aid would
+    require fabricating channels, operations, and message schemas that
+    ProfitWell/Retain does not publish. That violates the no-fabrication
+    rule.
+followups:
+  - >-
+    Leave apis.yml untouched. The task's conditional instruction "Update
+    apis.yml if spec created" does not apply because no AsyncAPI 2.6 spec
+    was produced. The `modified` date is therefore not bumped.
+  - >-
+    If a webhook contract is desired for Paddle's ecosystem, model it under
+    a separate `paddle` (or `paddle-billing`) aid using
+    developer.paddle.com/webhooks and the Paddle Billing event-types
+    reference as the source of truth. Do not co-mingle Paddle Billing
+    webhooks into the ProfitWell aid.
+  - >-
+    Re-check Paddle Retain documentation periodically for any future
+    Retain-scoped event types (e.g. recovery.succeeded, recovery.failed,
+    cancellation_flow.completed). If Paddle starts emitting Retain-scoped
+    events, an AsyncAPI 2.6 spec can be generated then.
+sources_checked:
+  - url: https://profitwellapiv2.docs.apiary.io/
+    note: ProfitWell API v2 reference. Only host configuration documented; no webhook section.
+  - url: https://www.paddle.com/help/profitwell-metrics/setup/get-started/profit-well-api
+    note: ProfitWell API help article. Inbound user/subscription input only; explicit ~90-minute metrics latency.
+  - url: https://developer.paddle.com/concepts/profitwell-metrics
+    note: Paddle Developer ProfitWell Metrics concept page. Analytics framing; integrations with Slack/HubSpot/Intercom/Salesforce. No webhooks.
+  - url: https://developer.paddle.com/build/retain/set-up-retain-profitwell
+    note: Paddle Retain setup page. Feature configuration only; no Retain-scoped webhook event list.
+  - url: https://developer.paddle.com/webhooks/overview
+    note: Paddle Billing webhooks overview. Lives under Paddle Billing, not ProfitWell/Retain.
+  - url: https://developer.paddle.com/api-reference/event-types/overview
+    note: Paddle Billing event types reference. entity.event_type naming; no Retain/ProfitWell-scoped events enumerated.
+  - url: https://developer.paddle.com/paddlejs/methods/paddle-retain-initcancellationflow
+    note: PaddleJS Paddle.Retain.initCancellationFlow() method. Client-side UX, not an event emitter.
