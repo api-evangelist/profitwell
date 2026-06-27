@@ -58,7 +58,7 @@ common:
     url: https://www.paddle.com/profitwell-metrics
   - type: Documentation
     url: https://www.paddle.com/help/profitwell-metrics
-  - type: SignUp
+  - type: Signup
     url: https://www2.profitwell.com/free-subscription-analytics
   - type: Pricing
     url: https://www.paddle.com/profitwell-metrics
