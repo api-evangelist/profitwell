@@ -52,6 +52,10 @@ apis:
         url: https://www.paddle.com/help/profitwell-metrics/setup/install-engagement/how-to-install-the-profit-well-js-snippet-for-engagement-data
 
 common:
+  - type: VulnerabilityDisclosure
+    url: security/profitwell-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/profitwell-domain-security.yml
   - type: GitHubOrganization
     url: https://github.com/ProfitWell
   - type: Website
