@@ -44,7 +44,7 @@ tags:
 url: >-
   https://raw.githubusercontent.com/api-evangelist/profitwell/refs/heads/main/apis.yml
 created: '2026-05-11'
-modified: '2026-05-11'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
   - aid: profitwell:metrics-api
@@ -74,6 +74,8 @@ apis:
         url: https://www.paddle.com/help/profitwell-metrics/setup/install-engagement/how-to-install-the-profit-well-js-snippet-for-engagement-data
 
 common:
+  - url: https://www.paddle.com/blog
+    type: Blog
   - type: VulnerabilityDisclosure
     url: security/profitwell-vulnerability-disclosure.yml
   - type: DomainSecurity
